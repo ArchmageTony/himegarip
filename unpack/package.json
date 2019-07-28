@@ -1,0 +1,13 @@
+{
+  "name": "himegarip-unpack",
+  "version": "1.0.0",
+  "scripts": {
+    "organize": "node scripts/organize.js",
+    "rehash": "node scripts/rehash.js"
+  },
+  "dependencies": {
+    "glob": "^7.1.4",
+    "md5": "^2.2.1",
+    "md5-file": "^4.0.0"
+  }
+}
