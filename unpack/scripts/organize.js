@@ -3,13 +3,10 @@ const path = require('path')
 const existing = require('../existing.json')
 const data = require('../../extension/data.json')
 
-const useNew = true
-const source = useNew ? 'ab' : 'ab-rehashed'
-
-let files = fs.readdirSync(path.join('assets', source))
+let files = fs.readdirSync(path.join('assets', 'ab-source'))
 
 files.forEach(hash => {
-  let srcFile = path.join(__dirname, '..', 'assets', source, hash)
+  let srcFile = path.join(__dirname, '..', 'assets', 'ab-source', hash)
   let name = data.hashes[hash]
   if (name) {
     let charId = name.substring(0, 3)
@@ -32,7 +29,7 @@ files.forEach(hash => {
         // console.log('aaa', hash, name)
         fs.copyFileSync(srcFile, path.join(__dirname, '..', 'assets', 'stand', charId + 'aaa'))
       }
-    } else if (name.indexOf('adv') > -1) {
+    } else if (name.indexOf('adv') > -1 || name.indexOf('aab') > -1) {
       // aab/adv
     } else if (name.indexOf('ga') > -1) {
       // gacha
@@ -44,7 +41,7 @@ files.forEach(hash => {
       fs.unlinkSync(srcFile)
       console.log('DELETED', hash)
     } else {
-      console.log('unknown', hash)
+      console.log('UNKNOWN', hash)
     }
   }
 })
