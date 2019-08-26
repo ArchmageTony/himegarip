@@ -61,10 +61,13 @@ typings/
 .next
 
 # Custom
-/unpack/assets/ab/*
-/unpack/assets/ab-named/*
-/unpack/assets/ab-rehashed/*
-/unpack/assets/event/*
-/unpack/assets/stand/*
+/unpack/assets/_/*
+/unpack/assets/ab-source/*
 /unpack/output/*
+/extract/ab-decomp/**/*
+/extract/ab-source/**/*
+/extract/ab-named/**/*
+/extract/output/**/*
 /test/**/*
+banner.jpg
+himegari.jpg
