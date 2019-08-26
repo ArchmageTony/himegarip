@@ -26,5 +26,23 @@
 			"js/background.js"
 		]
 	},
+	"content_scripts": [
+		{
+			"matches": ["*://pc-play.games.dmm.co.jp/play/himegari/"],
+			"js": [
+				"js/dmm.js"
+			],
+			"run_at": "document_end",
+			"all_frames": true
+		},
+		{
+			"matches": ["*://osapi.dmm.com/gadgets/*aid=759269*"],
+			"css": [
+				"css/osapi.css"
+			],
+			"run_at": "document_end",
+			"all_frames": true
+		}
+	],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
