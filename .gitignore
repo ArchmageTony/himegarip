@@ -64,9 +64,9 @@ typings/
 /unpack/assets/_/*
 /unpack/assets/ab-source/*
 /unpack/output/*
-/extract/ab-decomp/**/*
-/extract/ab-source/**/*
-/extract/ab-named/**/*
+/extract/$dev/**/*
+/extract/input/**/*
+/extract/decomp/**/*
 /extract/output/**/*
 /test/**/*
 banner.jpg

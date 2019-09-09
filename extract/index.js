@@ -6,18 +6,8 @@ const UAP = require('unitiyfs-asset-parser')
 const glossary = require('../extension/data.json')
 const existing = require('./existing.json')
 
-// Known Glossary
-// let knownIds = { chara:[], event:[]}
-// Object.keys(glossary.hashes).forEach(hash => {
-//   let charaId = glossary.hashes[hash]
-//   if (charaId.indexOf('ev') > -1) {
-//     knownIds.event.push(charaId.match(/\d+/)[0])
-//   } else if (charaId.indexOf('st') > -1) {
-//     knownIds.chara.push(charaId.match(/\d+/)[0])
-//   }
-// })
-
-let files = glob.sync('ab-source/*.decomp')
+// Decompressed files
+let files = glob.sync('input/*.decomp')
 files.forEach(filePath => {
   // Parse File
   let hash = path.basename(filePath).split('.')[0]
@@ -50,34 +40,54 @@ files.forEach(filePath => {
       // Other valids
       if (asset.m_Name.indexOf('ga') === 0) {
         abType = 'gacha'
+        abName = asset.m_Name
       } else if (asset.m_Name.indexOf('aab') === asset.m_Name.length -3) {
         abType = 'adv'
+        abName = asset.m_Name.substring(0, asset.m_Name.length-3) + 'adv'
       } else if (asset.m_Name.indexOf('aae') === asset.m_Name.length -3) {
         abType = 'adv'
+        abName = asset.m_Name.substring(0, asset.m_Name.length-3) + 'adv'
       } else if (asset.m_Name.indexOf('aaz') === asset.m_Name.length -3) {
         abType = 'adv'
+        abName = asset.m_Name.substring(0, asset.m_Name.length-3) + 'adv'
       }
       
     }
   })
 
-  // Add to glossary
-  if (!glossary.hashes[hash]) glossary.hashes[hash] = abName
-
   // Copy using AB name
   if (abType) {
+    // Add to glossary
+    if (!glossary.hashes[hash]) glossary.hashes[hash] = abName
+
+    // Move original compressed (disabled, move manually after execution)
+    // fs.renameSync(path.join(__dirname, 'input', hash), path.join(__dirname, 'output', 'original', hash))
+
+    // Move files
     if (abType == 'event' || abType == 'chara') {
       let charId =  abName.match(/\d+/)[0]
-      // Copy only if not existing in old gallery
+      
       if (existing[abType].indexOf(charId) === -1) {
-        // console.log('SAVING', filePath, abName)
-        fs.copyFileSync(filePath, './ab-named/' + abType + '/' + abName)
+        console.log('SAVING', filePath, abName)
+        fs.renameSync(filePath, path.join(__dirname, 'output', abType, abName))
+        
+      } else {
+        console.log('EXISTING', filePath, abName)
+        fs.renameSync(filePath, path.join(__dirname, 'output', 'existing', abName))
       }
+
     } else {
       console.log('SKIP', filePath, JSON.stringify(assetNames))
+      fs.renameSync(filePath, path.join(__dirname, 'output', 'skip', abName))
     }
 
   } else {
-    // console.log('!!!!!!!!! UNKNOWN', filePath, JSON.stringify(assetNames))
+    // Add to glossary ignore
+    console.log('IGNORE', filePath, JSON.stringify(assetNames))
+    glossary.ignore.push(hash)
+    fs.renameSync(filePath, path.join(__dirname, 'output', 'ignore', hash))
   }
+
 })
+
+fs.writeFileSync(path.join(__dirname, '..', 'extension', 'data.json'), JSON.stringify(glossary, null, 2))
