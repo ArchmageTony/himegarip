@@ -61,6 +61,7 @@ typings/
 .next
 
 # Custom
+/dev/**/*
 /unpack/assets/_/*
 /unpack/assets/ab-source/*
 /unpack/output/*
