@@ -1,0 +1,16 @@
+{
+  "name": "himegarip",
+  "version": "1.0.0",
+  "description": "Himegari Imperial Meister assets tools",
+  "scripts": {
+    "process": "node scripts/process.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dragonjet/himegarip.git"
+  },
+  "dependencies": {
+    "glob": "^7.1.4",
+    "unitiyfs-asset-parser": "0.0.4"
+  }
+}
