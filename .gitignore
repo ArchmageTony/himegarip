@@ -62,24 +62,7 @@ typings/
 
 # Custom
 /dev/**/*
-/unpack/assets/_/*
-/unpack/assets/ab-source/*
-/unpack/output/*
-/extract/$dev/**/*
-/extract/input/**/*
-/extract/decomp/**/*
-/extract/output/**/*
-/extract/icons
-/test/**/*
-banner.jpg
-himegari.jpg
-/shared/**/*
-/existing/base-chara/*
-/existing/base-event/*
-/existing/input-chara/*
-/existing/input-chara-extra/*
-/existing/input-chara-new/*
-/existing/input-event/*
-/existing/input-event-new/*
-/existing/output-chara/*
-/existing/output-event/*
+/assets/**/*
+!/assets/*.json
+/decomp/**/*
+!/decomp/decomp.bat
