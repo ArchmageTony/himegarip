@@ -68,7 +68,17 @@ typings/
 /extract/input/**/*
 /extract/decomp/**/*
 /extract/output/**/*
+/extract/icons
 /test/**/*
 banner.jpg
 himegari.jpg
 /shared/**/*
+/existing/base-chara/*
+/existing/base-event/*
+/existing/input-chara/*
+/existing/input-chara-extra/*
+/existing/input-chara-new/*
+/existing/input-event/*
+/existing/input-event-new/*
+/existing/output-chara/*
+/existing/output-event/*
