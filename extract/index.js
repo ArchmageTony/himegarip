@@ -58,27 +58,30 @@ files.forEach(filePath => {
   // Copy using AB name
   if (abType) {
     // Add to glossary
-    if (!glossary.hashes[hash]) glossary.hashes[hash] = abName
-
-    // Move original compressed (disabled, move manually after execution)
-    // fs.renameSync(path.join(__dirname, 'input', hash), path.join(__dirname, 'output', 'original', hash))
-
-    // Move files
-    if (abType == 'event' || abType == 'chara') {
-      let charId =  abName.match(/\d+/)[0]
-      
-      if (existing[abType].indexOf(charId) === -1) {
-        console.log('SAVING', filePath, abName)
-        fs.renameSync(filePath, path.join(__dirname, 'output', abType, abName))
-        
-      } else {
-        console.log('EXISTING', filePath, abName)
-        fs.renameSync(filePath, path.join(__dirname, 'output', 'existing', abName))
-      }
+    if (glossary.hashes[hash]) {
+      // Duplicate of an already known asset
+      fs.renameSync(filePath, path.join(__dirname, 'output', 'duplicate', abName))
 
     } else {
-      console.log('SKIP', filePath, JSON.stringify(assetNames))
-      fs.renameSync(filePath, path.join(__dirname, 'output', 'skip', abName))
+      glossary.hashes[hash] = abName
+
+      // Move files
+      if (abType == 'event' || abType == 'chara') {
+        let charId =  abName.match(/\d+/)[0]
+        
+        if (existing[abType].indexOf(charId) === -1) {
+          console.log('SAVING', filePath, abName)
+          fs.renameSync(filePath, path.join(__dirname, 'output', abType, abName))
+          
+        } else {
+          console.log('EXISTING', filePath, abName)
+          fs.renameSync(filePath, path.join(__dirname, 'output', 'existing', abName))
+        }
+
+      } else {
+        console.log('SKIP', filePath, JSON.stringify(assetNames))
+        fs.renameSync(filePath, path.join(__dirname, 'output', 'skip', abName))
+      }
     }
 
   } else {
