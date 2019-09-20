@@ -16,9 +16,9 @@ const listen = function(){
                 let hash = params.response.url.split('/').pop()
                 if (detectedHashes.indexOf(hash) === -1) {
                   detectedHashes.push(hash)
-                  if (data.ignore.indexOf(hash) > -1) {
+                  if (data.ignore[hash]) {
                     $("#hashes").append(`
-                      <div style="color:#c0c0c0;"><span class="hash">` + hash + `</span></div>
+                      <div style="color:#c0c0c0;"><span class="hash">` + hash + `</span> (`+ data.ignore[hash] +`)</div>
                     `)
                   } else if (data.hashes[hash]) {
                     $("#hashes").append(`
@@ -27,13 +27,9 @@ const listen = function(){
                   } else {
                     $("#hashes").append(`
                       <div style="">
-                        <a href="http://himegari.cdn.dmmgames.com/ab/WebGL/` + hash + `" target="_blank"><span class="hash">` + hash + `</span></a>
-                        <span class="saved" id="saved-` + hash + `"></span>
-                        <span id="controls-` + hash + `">
-                          <button class="ignore" data-hash="` + hash + `">ignore</button>
-                          <input type="text" class="charname" id="name-` + hash + `" />
-                          <button class="charify" data-hash="` + hash + `">char</button>
-                        </span>
+                        <a href="http://himegari.cdn.dmmgames.com/ab/WebGL/` + hash + `" target="_blank">
+                          <span class="hash">` + hash + `</span>
+                        </a>
                       </div>
                     `)
                   }
