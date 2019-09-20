@@ -965,7 +965,26 @@
     "f8ce82f9059cf39d433efa87a9caf836": "EXISTING_OLD",
     "fb2a9534c7e2ce48a90a36d2e0ce9739": "SECONDARY: ga325",
     "fb353dd2a8c97cb2a8d5129738def1e8": "SECONDARY: ga457",
-    "fb7fe938862e53c9cccd65ee1eaf5bc7": "EXISTING_OLD"
+    "fb7fe938862e53c9cccd65ee1eaf5bc7": "EXISTING_OLD",
+    "2a2eae0f4637951ccb87c02386766580": "EXISTING_OLD: ch001aaa",
+    "30441357746814633298d3f60118d71b": "NON_USEFUL",
+    "34de45b8859f1401033c6769189de92c": "NON_USEFUL",
+    "35e5c8a12b37ea395cb6f370e1b7daf4": "SECONDARY: ga640",
+    "3d3c16d394f0662317017b6c10596395": "NON_USEFUL",
+    "4dc061b178a298d24e01d18acdbbd01a": "NON_USEFUL",
+    "50811e10fe52492822d85c40db682215": "EXISTING_OLD: ch010aaa",
+    "683e9d1fa9702b4f29f76e3d8d682094": "NON_USEFUL",
+    "6d31175dbc097eb30d5250d62e4cf92b": "NON_IMAGE",
+    "7eb4698551ac674d932d7c2a7b6f21d4": "SECONDARY: ga2007",
+    "b20f14599e03377d83f3cd32711d0ff8": "EXISTING_OLD: ch001aad",
+    "cf21d88b4905f1deb68e022e3858d2a7": "SECONDARY: ch2007aab",
+    "d317161d9552a57abd25e4106b4a3ddd": "SECONDARY: ch2008aab",
+    "d959c08207191d47268b47a6f9c1fc58": "NON_USEFUL",
+    "e90cd3a5ce6713be7a3edd5d4279c4ed": "EXISTING_OLD: ch010aab",
+    "fa40d6646f8e393d3e79bc31385f52ec": "NON_USEFUL",
+    "5a04d4246fe8809620efd31958a75f9c": "NON_IMAGE",
+    "806d1484b2d57ad39253ddaa68201096": "NON_IMAGE",
+    "fa5ea612d1e20f3b36d0749e0990cedf": "NON_USEFUL"
   },
   "hashes": {
     "021d0b1ad6e788f2ee8b872d38627160": "ev478",
@@ -1245,6 +1264,13 @@
     "fdbb7e487de4eb40988e033e06113788": "ch368aaa",
     "fdf055feddf692e74c667096321b6125": "ev624",
     "fe5507aaecaafa244240b20a37669b34": "ev454",
-    "ffe40355587fc6c103cce6a4f6446112": "ch360aaa"
+    "ffe40355587fc6c103cce6a4f6446112": "ch360aaa",
+    "0cd1c7bbe1fcc1df34b010f7cd6473fc": "ev640",
+    "3934de694e872870e61a39c05c1155bd": "ch2007sss",
+    "43ede249c85ab647b1db32563438f485": "ch2008aaa",
+    "4e15c265aa344621efed8def04528a20": "ev2007",
+    "df72a3fce326db89cf6c2cd5a12811b9": "ch2007aaa",
+    "cb98015d6500b1bde80ae2cb07de10f7": "ch2008sss",
+    "ceb7cf6d3bc0a239d98c44fc69d4a9a4": "ev2008"
   }
 }
