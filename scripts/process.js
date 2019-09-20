@@ -5,6 +5,11 @@ const UAP = require('unitiyfs-asset-parser')
 
 const data = require('../extension/data.json')
 
+const REGEX_EVENT = /(ev[0-9]{3,4})/g
+const REGEX_CHARA = /(ch[0-9]{3,4}[a-z]{3})/g
+const REGEX_STAND = /(ch[0-9]{3,4}(aaa|sss))/g
+const REGEX_GACHA = /(ga[0-9]{3,4})/g
+
 // Decompressed files
 let files = glob.sync('assets/ab-new/*.decomp')
 files.forEach(decompFile => {
@@ -14,70 +19,74 @@ files.forEach(decompFile => {
   let assetList = UAP.parseAssetBundle(input)
   let originalFile = decompFile.substring(0, decompFile.length - 7)
 
-  // Get asset info
-  let abType = null
-  let abName = null
-  let hasImage = false
-  assetList.forEach(asset => {
-    if (abName) return
-    if (asset.type != 'Texture2D') return
-    hasImage = true
-
-    if (asset.m_Name.indexOf('ev') === 0) {
-      // Event
-      abType = 'event'
-      abName = asset.m_Name.split('_')[0]
-    } else {
-      let isCha = asset.m_Name.indexOf('ch') === 0
-      let isSSS = asset.m_Name.indexOf('sss') === asset.m_Name.length -3
-      let isAAA = asset.m_Name.indexOf('aaa') === asset.m_Name.length -3
-      if (isCha && (isSSS || isAAA)) {
-        // Chara
-        abType = 'chara'
-        abName = asset.m_Name
-      } else {
-        // Unknown
-        abName = asset.m_Name
-      }
-    }
-  })
-
-  // No image inside, just delete the file
-  if (!hasImage) {
-    fs.unlinkSync(decompFile)
-    fs.unlinkSync(originalFile)
-    console.log('No image. Delete', decompFile)
-  }
-
   // Hash already exists in our own records, ignore and delete
-  if (data.hashes[hash]) {
+  if (data.ignore[hash] || data.hashes[hash]) {
     fs.unlinkSync(decompFile)
     fs.unlinkSync(originalFile)
     console.log('Already-recorded asset. Delete', decompFile)
     return
   }
 
-  // No AB type, add to ignores
-  if (!abType) {
-    if (data.ignore.indexOf(hash) === -1) data.ignore.push(hash)
-    fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-ignore', abName || hash))
-    console.log('Not useful asset. Ignore', decompFile)
+  // Get asset info
+  let abName = null
+  let hasImage = false
+  assetList.forEach(asset => {
+    if (abName) return
+    if (asset.type != 'Texture2D') return
+    hasImage = true
+    if ( asset.m_Name.match(REGEX_EVENT) ) abName = asset.m_Name.match(REGEX_EVENT)[0]
+    if ( asset.m_Name.match(REGEX_CHARA) ) abName = asset.m_Name.match(REGEX_CHARA)[0]
+    if ( asset.m_Name.match(REGEX_GACHA) ) abName = asset.m_Name.match(REGEX_GACHA)[0]
+  })
+
+  // No image inside, add to ignores and delete decomp file
+  if (!hasImage) {
+    data.ignore[hash] = 'NON_IMAGE'
+    fs.unlinkSync(decompFile)
+    console.log('No image. Ignore', abName, decompFile)
+    return
+  }
+
+  // No abName, add to ignores and delete decomp file
+  if (!abName) {
+    data.ignore[hash] = 'NON_USEFUL'
+    fs.unlinkSync(decompFile)
+    console.log('Not useful asset. Ignore', abName, decompFile)
     return
   }
 
   // Existing in old gallery, ignore and delete
-  if (data.existing.indexOf(abName.match(/((ch|ev)[0-9]+)/g)[0]) > -1) {
+  let charId = abName.match(/((ev|ch)[0-9]{3,4})/g)
+  if (charId && data.existing.indexOf(charId[0]) > -1) {
+    data.ignore[hash] = 'EXISTING_OLD'
     fs.unlinkSync(decompFile)
     fs.unlinkSync(originalFile)
-    console.log('Exists in old gallery. Delete', decompFile)
+    console.log('Exists in old gallery. Ignore and Delete original', abName, decompFile)
     return
   }
 
-  if (Object.values(data.hashes).indexOf(abName) > -1) console.log('Duplicate', abName)
-  
-  data.hashes[hash] = abName
-  fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-' + abType, abName))
+  // Distribute AB to their folders
+  if (abName.match(REGEX_EVENT)) {
+    // Event
+    data.hashes[hash] = abName
+    fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-event', abName))
+    console.log('EVENT', abName)
+    
+
+  } else if (abName.match(REGEX_STAND)) {
+    // Chara Stand
+    data.hashes[hash] = abName
+    fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-chara', abName))
+    console.log('CHARA', abName)
+
+  } else {
+    // Other: gacha assets, adv assets
+    data.ignore[hash] = 'SECONDARY: ' + abName
+    fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-ignore', abName))
+    console.log('Secondary. Ignore', abName)
+  }
 
 })
 
+// Save data
 fs.writeFileSync(path.join(__dirname, '..', 'extension', 'data.json'), JSON.stringify(data, null, 2))
