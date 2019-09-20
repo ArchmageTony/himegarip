@@ -31,12 +31,12 @@ files.forEach(decompFile => {
   let abName = null
   let hasImage = false
   assetList.forEach(asset => {
-    if (abName) return
     if (asset.type != 'Texture2D') return
     hasImage = true
     if ( asset.m_Name.match(REGEX_EVENT) ) abName = asset.m_Name.match(REGEX_EVENT)[0]
-    if ( asset.m_Name.match(REGEX_CHARA) ) abName = asset.m_Name.match(REGEX_CHARA)[0]
-    if ( asset.m_Name.match(REGEX_GACHA) ) abName = asset.m_Name.match(REGEX_GACHA)[0]
+    else if ( asset.m_Name.match(REGEX_STAND) ) abName = asset.m_Name.match(REGEX_STAND)[0]
+    else if ( asset.m_Name.match(REGEX_CHARA) && (!abName || !abName.match(REGEX_STAND)) ) abName = asset.m_Name.match(REGEX_CHARA)[0]
+    else if ( asset.m_Name.match(REGEX_GACHA) ) abName = asset.m_Name.match(REGEX_GACHA)[0]
   })
 
   // No image inside, add to ignores and delete decomp file
@@ -76,14 +76,25 @@ files.forEach(decompFile => {
   } else if (abName.match(REGEX_STAND)) {
     // Chara Stand
     data.hashes[hash] = abName
-    fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-chara', abName))
-    console.log('CHARA', abName)
+    
+    // Check if set is complete (both aaa and sss are present)
+    let matchId = abName.indexOf('sss') > 1 ? charId + 'aaa' : charId + 'sss' 
+    let matchFile = path.join(__dirname, '..', 'assets', 'ab-chara', 'orphan', matchId)
+    if (fs.existsSync(matchFile)) {
+      console.log('CHARA-COMPLETE', abName)
+      fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-chara', abName))
+      fs.renameSync(matchFile, path.join(__dirname, '..', 'assets', 'ab-chara', matchId))
+    } else {
+      console.log('CHARA-ORPHAN', abName)
+      fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-chara', 'orphan', abName))
+    }
+    
 
   } else {
     // Other: gacha assets, adv assets
     data.ignore[hash] = 'SECONDARY: ' + abName
     fs.renameSync(decompFile, path.join(__dirname, '..', 'assets', 'ab-ignore', abName))
-    console.log('Secondary. Ignore', abName)
+    console.log('Secondary asset. Ignore', abName)
   }
 
 })
