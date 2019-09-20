@@ -63,6 +63,7 @@ typings/
 # Custom
 /dev/**/*
 /assets/**/*
-!/assets/*.json
+!/assets/*/
+!/assets/*/.gitkeep
 /decomp/**/*
 !/decomp/decomp.bat
