@@ -58,7 +58,7 @@ files.forEach(decompFile => {
   // Existing in old gallery, ignore and delete
   let charId = abName.match(/((ev|ch)[0-9]{3,4})/g)
   if (charId && data.existing.indexOf(charId[0]) > -1) {
-    data.ignore[hash] = 'EXISTING_OLD'
+    data.ignore[hash] = 'EXISTING_OLD: ' + abName
     fs.unlinkSync(decompFile)
     fs.unlinkSync(originalFile)
     console.log('Exists in old gallery. Ignore and Delete original', abName, decompFile)
