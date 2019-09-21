@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Himegari Imperial Meister assets tools",
   "scripts": {
-    "process": "node scripts/process.js"
+    "process": "node scripts/process.js",
+    "list": "node scripts/list.js"
   },
   "repository": {
     "type": "git",
