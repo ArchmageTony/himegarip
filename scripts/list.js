@@ -11,8 +11,8 @@ const blankIconPath = path.resolve(path.join(__dirname, '..', 'assets', 'none.pn
 
 let files = []
 
-// glob.sync('assets/missing-chara/*.png').forEach(file => { fs.unlinkSync(file) })
-// glob.sync('assets/missing-event/*.png').forEach(file => { fs.unlinkSync(file) })
+glob.sync('assets/missing-chara/*.png').forEach(file => { fs.unlinkSync(file) })
+glob.sync('assets/missing-event/*.png').forEach(file => { fs.unlinkSync(file) })
 
 glob.sync('assets/icon-chara/*.png').forEach(iconPath => {
   let iconName = path.basename(iconPath)
